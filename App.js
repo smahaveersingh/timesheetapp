@@ -1,99 +1,44 @@
-import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import Constants from 'expo-constants';
-import * as SQLite from 'expo-sqlite';
-import Header from './components/Header';
-import CalendarPicker from 'react-native-calendar-picker';
+import { StatusBar } from 'expo-status-bar';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import {  createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+//import {createBottomTabNavigator} from 'react-navigation-tabs';
 
-export default class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedStartDate: null,
-    };
-    this.onDateChange = this.onDateChange.bind(this);
-  }
+import Login from './screens/login';
+import Home from './screens/home';
+import Colors from './constants/Colors';
 
-  onDateChange(date) {
-    this.setState({
-      selectedStartDate: date,
-    });
-  }
-
-  render() {
-    const { selectedStartDate } = this.state;
-    const startDate = selectedStartDate ? selectedStartDate.toString() : '';
-   return (
-      <View style={styles.container}>
-        <Header title="Timesheets" />
-        <View style={styles.flexRow}>
-          <Text style={styles.heading}>Week Ending</Text>
-        </View>
-        <View>
-          <Text>{ startDate }</Text>
-        </View>
-        <CalendarPicker
-          onDateChange={this.onDateChange}
-        />
+const screens = {
+  Login:
+  {
+    screen: Login,
+      navigationOptions:
+      {
+        title: 'Login',
+        headerStyles: { backgroundColor: Platform.OS === 'android' ? Colors.primary : '',
+        headerTintColor: Platform.OS === 'android' ? 'white' :  Colors.primary
         
-      </View>
-    );
+      },
   }
+},
+
+  Home:
+  {
+      screen: Home,
+      navigationOptions:
+      {
+        title: 'Home'
+
+      }
+  }
+
 }
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#fff",
-    flex: 1,
-    paddingTop: Constants.statusBarHeight
-  },
-  heading: {
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
-    color: 'black',
-    paddingTop: 26,
-    paddingLeft: 10,
-  },
-  flexRow: {
-    flexDirection: "row"
-  },
-  input: {
-    borderColor: "#4630eb",
-    borderRadius: 4,
-    borderWidth: 1,
-    flex: 1,
-    height: 48,
-    width: 68,
-    margin: 16,
-    padding: 8
-  },
-  listArea: {
-    backgroundColor: "#f0f0f0",
-    flex: 1,
-    paddingTop: 16
-  },
-  sectionContainer: {
-    marginBottom: 16,
-    marginHorizontal: 16
-  },
-  sectionHeading: {
-    fontSize: 18,
-    marginBottom: 8
-  },
-  calender: {
-    paddingTop: 96,
-    paddingLeft: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
-    marginLeft: -240
-  },
-  showdate: {
-    fontSize: 15,
-    color: 'black',
-    paddingTop: 56,
-    paddingLeft: 10,
-    marginLeft: -26
-  }
-});
+
+const stackNavigator = createStackNavigator(screens);
+
+
+
+const App = createAppContainer(stackNavigator)
+export default App
