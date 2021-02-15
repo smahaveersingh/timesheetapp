@@ -1,44 +1,26 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import {  createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-//import {createBottomTabNavigator} from 'react-navigation-tabs';
+import { Text, View } from 'react-native';
 
-import Login from './screens/login';
-import Home from './screens/home';
-import Colors from './constants/Colors';
+import CustomDatePicker from './components/datepicker';
 
-const screens = {
-  Login:
-  {
-    screen: Login,
-      navigationOptions:
-      {
-        title: 'Login',
-        headerStyles: { backgroundColor: Platform.OS === 'android' ? Colors.primary : '',
-        headerTintColor: Platform.OS === 'android' ? 'white' :  Colors.primary
-        
-      },
-  }
-},
+const App = () => {
+  return(
+    <View style={{flex: 1, marginTop: 50}}>
+      <View style={{marginHorizontal: 20}}>
+        <Text>Week Ending</Text>
+        <CustomDatePicker 
+          textStyle={{
+            paddingVertical: 15,
+            paddingHorizontal: 10,
+            borderColor: 'grey',
+            borderWidth: 1,
+          }}
+          defaultDate="2021-01-01"
+          onDateChange={(value) => console.log('Date Changed: ' + value)}
+        />
+      </View>
+    </View>
+  );
+};
 
-  Home:
-  {
-      screen: Home,
-      navigationOptions:
-      {
-        title: 'Home'
-
-      }
-  }
-
-}
-
-
-const stackNavigator = createStackNavigator(screens);
-
-
-
-const App = createAppContainer(stackNavigator)
-export default App
+export default App;
